@@ -23,7 +23,7 @@ async function until(check) {
     await new Promise((r) => setTimeout(r, 25));
   }
 }
-async function fixture(t, { waiting = false } = {}) {
+async function fixture(t, { waiting = false, cleanupDelay = 0 } = {}) {
   const dir = mkdtempSync(join(tmpdir(), 'bridge-guided-'));
   const repo = join(dir, 'repo'),
     state = join(dir, 'state');
@@ -68,6 +68,7 @@ setInterval(()=>{if(fs.existsSync(${JSON.stringify(join(dir, 'lose-tunnel'))}))p
       res.end('{"agent_config_id":"owned-agent"}');
     } else if (req.url.endsWith('/create_bot')) res.end('{"bot_id":"owned-bot"}');
     else if (req.url.endsWith('/remove_bot')) {
+      await new Promise((r) => setTimeout(r, cleanupDelay));
       departed = true;
       res.end('{}');
     } else if (req.url.endsWith('/status'))
@@ -159,14 +160,20 @@ setInterval(()=>{if(fs.existsSync(${JSON.stringify(join(dir, 'lose-tunnel'))}))p
     output: () => output,
   };
 }
-for (const method of ['npm stop', 'Ctrl+C'])
+for (const method of ['npm stop', 'Ctrl+C', 'repeated Ctrl+C'])
   test(`${method} stops active runtime, owned tunnel and bot`, async (t) => {
-    const x = await fixture(t);
+    const x = await fixture(t, { cleanupDelay: method === 'repeated Ctrl+C' ? 200 : 0 });
     await until(() => x.output().includes('Admit DeepSeek'));
     await x.approve();
     await until(() => existsSync(x.runtime));
     if (method === 'npm stop') await x.stop();
-    else x.child.kill('SIGINT');
+    else {
+      x.child.kill('SIGINT');
+      if (method === 'repeated Ctrl+C') {
+        await until(() => x.requests.some(([path]) => path.endsWith('/remove_bot')));
+        x.child.kill('SIGINT');
+      }
+    }
     assert.equal((await x.closed)[0], 0, x.output());
     for (const file of [x.runtime, x.tunnelPid])
       assert.throws(() => process.kill(JSON.parse(readFileSync(file)).pid, 0), { code: 'ESRCH' });

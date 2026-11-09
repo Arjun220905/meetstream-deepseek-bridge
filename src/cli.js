@@ -232,8 +232,9 @@ async function main() {
       process.exitCode = 1;
     });
   };
-  process.once('SIGINT', requestStop);
-  process.once('SIGTERM', requestStop);
+  // npm can forward a second terminal signal while asynchronous cleanup is still running.
+  process.on('SIGINT', requestStop);
+  process.on('SIGTERM', requestStop);
   try {
     const token = process.env.BRIDGE_TOKEN || randomBytes(32).toString('hex');
     const adminToken = randomBytes(32).toString('hex');
