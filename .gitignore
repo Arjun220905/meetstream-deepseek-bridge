@@ -1,0 +1,26 @@
+node_modules/
+.env
+.state/
+.reference/
+coverage/
+*.log
+.DS_Store
+
+.env.*
+!.env.example
+
+# Private development notes and generated recordings
+/docs/review.md
+/docs/google-meet-verification.md
+/docs/launcher-verification.md
+/docs/local-model-verification.md
+/docs/blog-metadata.json
+/docs/demo.cast
+/scripts/local-acceptance.js
+/scripts/record-demo.js
+
+/plan.md
+/PLAN.md
+/odd.md
+/ODD.md
+/.codex/
