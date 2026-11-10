@@ -31,7 +31,7 @@ Have a separate Git copy of the repository you want the assistant to work on. Us
 
 ## 3. Open this project and start
 
-Download or clone [the repository](https://github.com/Arjun220905/meetstream-deepseek-bridge), and extract the project folder if it came as a ZIP. Open **Terminal**, type `cd `, drag the bridge folder from Finder into Terminal, then press Enter. Run subsequent commands from that folder.
+On this repository's GitHub page, choose **Code → Download ZIP**, or ask a teammate to clone it. Extract the ZIP if needed. Open **Terminal**, type `cd `, drag the bridge folder from Finder into Terminal, then press Enter. Run subsequent commands from that folder.
 
 Create or open a meeting and copy its invitation link. You must be able to admit the assistant and allow meeting chat and transcription.
 
@@ -53,7 +53,7 @@ Keys are hidden while you type or paste them. Press Enter after each answer. Sav
 
 Startup makes a small, read-only model request to check access. This is an API request billed under your configured provider. Invalid credentials, insufficient balance, a missing repository or a failed connection stop startup before a meeting bot is invited. No coding task runs during this check.
 
-When Terminal says **“Admit DeepSeek Meeting Agent”**, admit that participant in your meeting. Leave Terminal open. On Zoom, the host may also need to allow recording; Zoom requires additional account setup. See [platform notes](docs/verification.md).
+When Terminal says **“Admit DeepSeek Meeting Agent”**, admit that participant in your meeting. Leave Terminal open. On Zoom, the host may also need to allow recording; Zoom requires additional account setup. See [platform notes](README.md#meeting-platforms).
 
 You do not need to launch the bot separately in MeetStream. Running `npm start` while this bridge is already running will refuse a second owner rather than invite a duplicate bot.
 
@@ -126,4 +126,4 @@ Stop the bridge first. On a Mac, run `open -e .env` from this project folder to 
 
 Keep `.env`, `.state` and Harness session history private. The bridge requests 48-hour retention for MeetStream media; stopping the bot does not erase recordings or local history.
 
-For account reuse, custom public connections and deployment details, see the [technical setup guide](docs/quickstart.md). See [verification](docs/verification.md) for tested behavior and remaining limits.
+For account reuse, custom public connections and technical details, see [README.md](README.md).

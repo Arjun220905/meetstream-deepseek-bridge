@@ -20,7 +20,7 @@ export class Harness {
       version = execFileSync(this.bin, ['--version'], { encoding: 'utf8', timeout: 15000 }).trim();
     } catch {
       throw new Error(
-        `Install DeepSeek Harness ${SUPPORTED_VERSION}, then reopen Terminal and run npm start. See quickstart.md.`,
+        `Install DeepSeek Harness ${SUPPORTED_VERSION}, then reopen Terminal and run npm start. See Quickstart.md.`,
       );
     }
     if (version !== SUPPORTED_VERSION)
